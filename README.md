@@ -82,10 +82,23 @@ poetry run ruff check src
 | `LOG_LEVEL` | Logging verbosity level | `INFO` |
 | `SERVICE_API_KEY` | API key used by downstream services | _unset_ |
 | `BACKGROUND_POLL_INTERVAL_SECONDS` | Interval for scheduler heartbeat | `300` |
+| `MARKET_DATA_ENABLED` | Toggle the background market data feed service | `true` |
+| `MARKET_DATA_PROVIDER` | Upstream market data provider identifier | `binance` |
+| `MARKET_DATA_SYMBOL` | Trading pair symbol to monitor | `BTCUSDT` |
+| `MARKET_DATA_TIMEZONE` | Timezone used to normalize market data timestamps | `America/Argentina/Buenos_Aires` |
+| `MARKET_DATA_HISTORY_LIMIT` | Number of historical candles to seed per timeframe | `500` |
+| `MARKET_DATA_TICK_BUFFER_SIZE` | Number of recent ticks retained in memory | `1000` |
 
 ## Background Scheduler Placeholder
 
 An asynchronous scheduler loop is provided under `app.core.scheduler`. It currently emits heartbeat logs at the configured interval and is ready to host additional recurring jobs. Extend `app.services` with domain-specific tasks and register them with the scheduler as needed.
+
+## Market Data Feed
+
+A background market data feed ingests live Binance trades for BTCUSDT (configurable) and aggregates
+OHLCV candles for 1m, 5m, 15m, 1h, 4h, and 1d intervals. Recent ticks and candle snapshots are stored
+in memory and exposed through the `/api/market-data/{symbol}` endpoint. Timestamps are normalized to
+Argentina's `UTC−3` offset by default and can be adjusted via configuration.
 
 ## Time Utilities
 
