@@ -43,6 +43,19 @@ class Settings(BaseSettings):
         default=300, alias="BACKGROUND_POLL_INTERVAL_SECONDS"
     )
 
+    market_data_enabled: bool = Field(default=True, alias="MARKET_DATA_ENABLED")
+    market_data_provider: str = Field(default="binance", alias="MARKET_DATA_PROVIDER")
+    market_data_symbol: str = Field(default="BTCUSDT", alias="MARKET_DATA_SYMBOL")
+    market_data_timezone: str = Field(
+        default="America/Argentina/Buenos_Aires", alias="MARKET_DATA_TIMEZONE"
+    )
+    market_data_history_limit: int = Field(
+        default=500, alias="MARKET_DATA_HISTORY_LIMIT"
+    )
+    market_data_tick_buffer_size: int = Field(
+        default=1000, alias="MARKET_DATA_TICK_BUFFER_SIZE"
+    )
+
 
 @lru_cache
 def get_settings() -> Settings:
